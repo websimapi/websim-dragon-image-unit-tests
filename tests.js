@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 
-const canvas = document.getElementById('testCanvas');
+let canvas = document.getElementById('testCanvas');
 const resultsDiv = document.getElementById('results');
+const audioControlsDiv = document.getElementById('audio-controls');
 const imageUrl = './dragon.png';
+let generatedAudioUrl = '';
 
 // --- Test Runner ---
 
@@ -12,6 +14,8 @@ async function runTests() {
     await testEditImageOnCanvas();
     await testRenderIn3DScene();
     await testAIImageAnalysis();
+    await testGenerateAudio();
+    await testVoiceCloneTTS();
     resultsDiv.innerHTML += '\nAll tests complete.';
 }
 
@@ -68,7 +72,7 @@ async function testEditImageOnCanvas() {
     const testName = 'Edit Image on Canvas';
     const ctx = canvas.getContext('2d');
     try {
-        // Ensure image is drawn first
+        // We need to re-render the base image because the canvas might have been replaced.
         await testRenderImageOnCanvas();
         
         const originalPixel = ctx.getImageData(10, 10, 1, 1).data;
@@ -95,6 +99,16 @@ async function testEditImageOnCanvas() {
 async function testRenderIn3DScene() {
     const testName = 'Render Image in 3D Scene';
     try {
+        // To prevent context type errors, we replace the canvas element.
+        const canvasContainer = document.getElementById('canvas-container');
+        const newCanvas = document.createElement('canvas');
+        newCanvas.id = 'testCanvas';
+        newCanvas.width = 512;
+        newCanvas.height = 512;
+        canvasContainer.innerHTML = ''; // Clear old canvas
+        canvasContainer.appendChild(newCanvas);
+        canvas = newCanvas; // Update global reference
+
         const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
         renderer.setSize(canvas.width, canvas.height);
         renderer.setClearColor(0xdddddd);
@@ -117,6 +131,8 @@ async function testRenderIn3DScene() {
             throw new Error('Scene setup failed or plane not added.');
         }
         renderer.dispose(); // Clean up
+        // We must re-render the 2D image for subsequent tests.
+        await testRenderImageOnCanvas();
     } catch (error) {
         logResult(testName, false, `Three.js error: ${error.message}`);
     }
@@ -158,8 +174,69 @@ async function testAIImageAnalysis() {
     }
 }
 
+/**
+ * Test 5: Generates a short audio clip.
+ */
+async function testGenerateAudio() {
+    const testName = 'Generate sample audio for TTS';
+    try {
+        const result = await websim.textToSpeech({
+            text: "The treasure is guarded by the ancient wyrm.",
+            voice: "en-male"
+        });
+
+        if (result.url) {
+            generatedAudioUrl = result.url;
+            logResult(testName, true, `Audio generated successfully.`);
+            
+            const audio = new Audio(generatedAudioUrl);
+            audio.controls = true;
+            const label = document.createElement('p');
+            label.textContent = 'Generated audio sample:';
+            audioControlsDiv.appendChild(label);
+            audioControlsDiv.appendChild(audio);
+
+        } else {
+            throw new Error('Audio generation failed, no URL returned.');
+        }
+    } catch (error) {
+        logResult(testName, false, `Audio generation error: ${error.message}`);
+    }
+}
+
+/**
+ * Test 6: Uses the generated audio to create TTS with a cloned voice.
+ */
+async function testVoiceCloneTTS() {
+    const testName = 'TTS with Cloned Voice';
+    if (!generatedAudioUrl) {
+        logResult(testName, false, 'Skipping test: sample audio not available.');
+        return;
+    }
+    
+    try {
+        const result = await websim.textToSpeech({
+            text: "My voice has been cloned. I can say anything now!",
+            voice: generatedAudioUrl // Pass the URL of the audio file to clone
+        });
+
+        if (result.url) {
+            logResult(testName, true, 'TTS with cloned voice completed successfully.');
+            
+            const audio = new Audio(result.url);
+            audio.controls = true;
+            const label = document.createElement('p');
+            label.textContent = 'Cloned voice TTS output:';
+            audioControlsDiv.appendChild(label);
+            audioControlsDiv.appendChild(audio);
+        } else {
+            throw new Error('TTS with cloned voice failed, no URL returned.');
+        }
+    } catch (error) {
+        logResult(testName, false, `TTS cloning error: ${error.message}`);
+    }
+}
 
 // --- Start Execution ---
 
 document.addEventListener('DOMContentLoaded', runTests);
-

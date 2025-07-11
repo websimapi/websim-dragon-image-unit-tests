@@ -20,6 +20,9 @@
             background-color: white;
             display: block;
         }
+        #audio-controls {
+            margin: 1em 0;
+        }
         #results { 
             white-space: pre-wrap; 
             background: #e9e9f3;
@@ -43,7 +46,10 @@
 <body>
     <h1>Dragon Image Unit Tests</h1>
     <p>Running a series of automated tests on a generated dragon image.</p>
-    <canvas id="testCanvas" width="512" height="512"></canvas>
+    <div id="canvas-container">
+      <canvas id="testCanvas" width="512" height="512"></canvas>
+    </div>
+    <div id="audio-controls"></div>
     <h2>Test Results:</h2>
     <pre id="results">Running tests...</pre>
 
@@ -59,4 +65,3 @@
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
-
