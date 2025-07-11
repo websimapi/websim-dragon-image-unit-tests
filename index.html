@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Image Unit Tests</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 2em; 
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #1a1a1a;
+        }
+        canvas { 
+            border: 1px solid #ccc;
+            margin-bottom: 1em; 
+            background-color: white;
+            display: block;
+        }
+        #results { 
+            white-space: pre-wrap; 
+            background: #e9e9f3;
+            padding: 1em; 
+            border-radius: 8px;
+            border: 1px solid #d1d1e0;
+            min-height: 150px;
+            font-family: "Courier New", Courier, monospace;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .status.passed {
+            color: #28a745;
+        }
+        .status.failed {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dragon Image Unit Tests</h1>
+    <p>Running a series of automated tests on a generated dragon image.</p>
+    <canvas id="testCanvas" width="512" height="512"></canvas>
+    <h2>Test Results:</h2>
+    <pre id="results">Running tests...</pre>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="tests.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
