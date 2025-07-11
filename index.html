@@ -41,17 +41,35 @@
         .status.failed {
             color: #dc3545;
         }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 1em;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
     <h1>Dragon Image Unit Tests</h1>
-    <p>Running a series of automated tests on a generated dragon image.</p>
+    <p>Running a series of automated tests on a generated dragon image. Click the button below to start.</p>
+    <button id="run-tests-btn">Run Tests</button>
     <div id="canvas-container">
       <canvas id="testCanvas" width="512" height="512"></canvas>
     </div>
     <div id="audio-controls"></div>
     <h2>Test Results:</h2>
-    <pre id="results">Running tests...</pre>
+    <pre id="results">Click the "Run Tests" button to start.</pre>
 
     <script type="importmap">
     {

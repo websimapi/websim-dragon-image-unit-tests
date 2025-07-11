@@ -3,20 +3,28 @@ import * as THREE from 'three';
 let canvas = document.getElementById('testCanvas');
 const resultsDiv = document.getElementById('results');
 const audioControlsDiv = document.getElementById('audio-controls');
+const runTestsBtn = document.getElementById('run-tests-btn');
 const imageUrl = './dragon.png';
 let generatedAudioUrl = '';
 
 // --- Test Runner ---
 
 async function runTests() {
+    runTestsBtn.disabled = true;
+    runTestsBtn.textContent = 'Running...';
+    audioControlsDiv.innerHTML = ''; // Clear previous audio players
     resultsDiv.innerHTML = 'Starting tests...\n';
+    
     await testRenderImageOnCanvas();
     await testEditImageOnCanvas();
     await testRenderIn3DScene();
     await testAIImageAnalysis();
     await testGenerateAudio();
     await testVoiceCloneTTS();
+    
     resultsDiv.innerHTML += '\nAll tests complete.';
+    runTestsBtn.disabled = false;
+    runTestsBtn.textContent = 'Run Tests Again';
 }
 
 function logResult(testName, passed, details = '') {
@@ -239,4 +247,4 @@ async function testVoiceCloneTTS() {
 
 // --- Start Execution ---
 
-document.addEventListener('DOMContentLoaded', runTests);
+runTestsBtn.addEventListener('click', runTests);
